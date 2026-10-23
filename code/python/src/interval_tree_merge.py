@@ -366,6 +366,9 @@ def copy_variant_fields(
     target_variant.id = source_variant.id
     target_variant.ref = source_variant.ref
     target_variant.alts = source_variant.alts
+    # pysam stores INFO/END as the record's stop and omits it from info.keys(), so the INFO loop
+    # below never copies it. Without this, symbolic alleles (<DEL>, <INV>) get END = POS.
+    target_variant.stop = source_variant.stop
     target_variant.qual = source_variant.qual
 
     try:
